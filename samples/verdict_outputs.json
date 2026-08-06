@@ -1,0 +1,121 @@
+[
+  {
+    "npi": "1003820432",
+    "directory_name": "Luisa Skoble",
+    "directory_address": "593 EDDY ST , PROVIDENCE, RI 029034923",
+    "status": "VERIFIED",
+    "confidence": 0.99,
+    "rule_path": "strands:agent",
+    "model": "bedrock:us.anthropic.claude-haiku-4-5-20251001-v1:0",
+    "reason": "NPI is valid and active; provider name matches exactly (Luisa Skoble); directory address 593 Eddy St, Providence, RI 02903 matches exactly with NPPES primary practice location.",
+    "tool_calls": [
+      "check_npi_format",
+      "validate_practice_address",
+      "lookup_npi_registry",
+      "match_provider_name",
+      "compare_practice_addresses",
+      "VerdictOutput"
+    ]
+  },
+  {
+    "npi": "1003820432",
+    "directory_name": "Luisa Skoble",
+    "directory_address": "45 WELLS ST SUITE 104, WESTERLY, RI 028912927",
+    "status": "STALE",
+    "confidence": 0.95,
+    "rule_path": "strands:agent",
+    "model": "bedrock:us.anthropic.claude-haiku-4-5-20251001-v1:0",
+    "reason": "Provider name matches exactly and NPI is active, but directory address in Westerly does not match any of the two NPPES practice locations in Providence, RI.",
+    "tool_calls": [
+      "check_npi_format",
+      "validate_practice_address",
+      "lookup_npi_registry",
+      "match_provider_name",
+      "compare_practice_addresses",
+      "VerdictOutput"
+    ]
+  },
+  {
+    "npi": "1003821828",
+    "directory_name": "Raymond Hinson",
+    "directory_address": "111 E 210TH ST , BRONX, NY 104672401",
+    "status": "VERIFIED",
+    "confidence": 0.95,
+    "rule_path": "strands:agent",
+    "model": "bedrock:us.anthropic.claude-haiku-4-5-20251001-v1:0",
+    "reason": "NPI is valid and active; name matches exactly (Raymond Hinson); street address matches (111 E 210TH ST / 111 EAST 210 STREET in BRONX, NY); ZIP formatting noise ignored.",
+    "tool_calls": [
+      "check_npi_format",
+      "lookup_npi_registry",
+      "match_provider_name",
+      "validate_practice_address",
+      "compare_practice_addresses",
+      "VerdictOutput"
+    ]
+  },
+  {
+    "npi": "1003821828",
+    "directory_name": "Raymond Hinson",
+    "directory_address": "12 N 7TH AVE , MOUNT VERNON, NY 105502026",
+    "status": "STALE",
+    "confidence": 0.95,
+    "rule_path": "strands:agent",
+    "model": "bedrock:us.anthropic.claude-haiku-4-5-20251001-v1:0",
+    "reason": "Provider name matches exactly and NPI is active, but directory address (12 N 7TH AVE, MOUNT VERNON, NY 10550) does not match the NPPES practice location (111 EAST 210 STREET, BRONX, NY 10467).",
+    "tool_calls": [
+      "check_npi_format",
+      "validate_practice_address",
+      "lookup_npi_registry",
+      "match_provider_name",
+      "compare_practice_addresses",
+      "VerdictOutput"
+    ]
+  },
+  {
+    "npi": "1003582156",
+    "directory_name": "Cindy Queliza",
+    "directory_address": "330 COMMUNITY DR , MANHASSET, NY 110303816",
+    "status": "NEEDS_HUMAN_REVIEW",
+    "confidence": 0.95,
+    "rule_path": "strands:agent",
+    "model": "bedrock:us.anthropic.claude-haiku-4-5-20251001-v1:0",
+    "reason": "NPI 1003582156 is active but belongs to CINDY ABELIDO at 805 NORTHERN BLVD, GREAT NECK, NY—not CINDY QUELIZA at 330 COMMUNITY DR, MANHASSET, NY; last name mismatch and different practice locations suggest possible NPI assignment error.",
+    "tool_calls": [
+      "check_npi_format",
+      "validate_practice_address",
+      "lookup_npi_registry",
+      "match_provider_name",
+      "compare_practice_addresses",
+      "VerdictOutput"
+    ]
+  },
+  {
+    "npi": "1003049883",
+    "directory_name": "Kapedjanie Bois",
+    "directory_address": "154 WATERMAN ST SUITE 1B, PROVIDENCE, RI 029063116",
+    "status": "VERIFIED",
+    "confidence": 1.0,
+    "rule_path": "strands:agent",
+    "model": "bedrock:us.anthropic.claude-haiku-4-5-20251001-v1:0",
+    "reason": "NPI is valid and active in NPPES; name matches exactly (Kapedjanie Bois); practice address at 154 Waterman St, Suite 1B, Providence, RI matches NPPES location exactly.",
+    "tool_calls": [
+      "check_npi_format",
+      "lookup_npi_registry",
+      "match_provider_name",
+      "compare_practice_addresses",
+      "validate_practice_address",
+      "VerdictOutput"
+    ]
+  },
+  {
+    "npi": "1003582156",
+    "directory_name": "Cindy Queliza",
+    "directory_address": "350 COMMUNITY DR , MANHASSET, NY 110303816",
+    "status": "NEEDS_HUMAN_REVIEW",
+    "confidence": 0.15,
+    "rule_path": "strands:low_confidence",
+    "model": "bedrock:us.anthropic.claude-haiku-4-5-20251001-v1:0",
+    "reason": "Last name mismatch (Queliza vs. ABELIDO) and practice address mismatch (Manhasset vs. Great Neck) suggest either wrong NPI assignment or significant data drift requiring manual verification.",
+    "note": "Example of confidence floor: model confidence 0.15 < 0.6 → forced human review"
+  }
+]

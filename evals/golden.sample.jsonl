@@ -1,0 +1,7 @@
+{"npi": "1003820432", "directory_address": "593 EDDY ST, PROVIDENCE, RI", "expected_status": "VERIFIED", "predicted_status": "VERIFIED", "label_note": "exact name + matching NPPES location"}
+{"npi": "1003820432", "directory_address": "45 WELLS ST SUITE 104, WESTERLY, RI", "expected_status": "STALE", "predicted_status": "STALE", "label_note": "same person, Westerly not in NPPES locations"}
+{"npi": "1003821828", "directory_address": "111 E 210TH ST, BRONX, NY", "expected_status": "VERIFIED", "predicted_status": "VERIFIED", "label_note": "address match with formatting noise"}
+{"npi": "1003821828", "directory_address": "12 N 7TH AVE, MOUNT VERNON, NY", "expected_status": "STALE", "predicted_status": "STALE", "label_note": "Mount Vernon not in NPPES"}
+{"npi": "1003582156", "directory_address": "330 COMMUNITY DR, MANHASSET, NY", "expected_status": "NEEDS_HUMAN_REVIEW", "predicted_status": "NEEDS_HUMAN_REVIEW", "label_note": "Queliza vs Abelido name conflict"}
+{"npi": "1003049883", "directory_address": "154 WATERMAN ST SUITE 1B, PROVIDENCE, RI", "expected_status": "VERIFIED", "predicted_status": "VERIFIED", "label_note": "clean happy path"}
+{"npi": "1003582156", "directory_address": "350 COMMUNITY DR, MANHASSET, NY", "expected_status": "NEEDS_HUMAN_REVIEW", "predicted_status": "NEEDS_HUMAN_REVIEW", "label_note": "low-confidence path / conflict"}

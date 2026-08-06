@@ -1,0 +1,69 @@
+[
+  {
+    "npi": "1003820432",
+    "first_name": "Luisa",
+    "last_name": "Skoble",
+    "address_line_1": "593 EDDY ST",
+    "address_line_2": null,
+    "city": "PROVIDENCE",
+    "state": "RI",
+    "zip5": "02903",
+    "note": "Matches NPPES practice location — expect VERIFIED"
+  },
+  {
+    "npi": "1003820432",
+    "first_name": "Luisa",
+    "last_name": "Skoble",
+    "address_line_1": "45 WELLS ST",
+    "address_line_2": "SUITE 104",
+    "city": "WESTERLY",
+    "state": "RI",
+    "zip5": "02891",
+    "note": "Same clinician, different city than NPPES locations — expect STALE"
+  },
+  {
+    "npi": "1003821828",
+    "first_name": "Raymond",
+    "last_name": "Hinson",
+    "address_line_1": "111 E 210TH ST",
+    "address_line_2": null,
+    "city": "BRONX",
+    "state": "NY",
+    "zip5": "10467",
+    "note": "Address matches NPPES (formatting noise OK) — expect VERIFIED"
+  },
+  {
+    "npi": "1003821828",
+    "first_name": "Raymond",
+    "last_name": "Hinson",
+    "address_line_1": "12 N 7TH AVE",
+    "address_line_2": null,
+    "city": "MOUNT VERNON",
+    "state": "NY",
+    "zip5": "10550",
+    "note": "Same NPI/name, office not in NPPES — expect STALE"
+  },
+  {
+    "npi": "1003582156",
+    "first_name": "Cindy",
+    "last_name": "Queliza",
+    "address_line_1": "330 COMMUNITY DR",
+    "address_line_2": null,
+    "city": "MANHASSET",
+    "state": "NY",
+    "zip5": "11030",
+    "line_2_suppressed": false,
+    "note": "Directory last name Queliza; NPPES is Abelido at another address — expect NEEDS_HUMAN_REVIEW"
+  },
+  {
+    "npi": "1003049883",
+    "first_name": "Kapedjanie",
+    "last_name": "Bois",
+    "address_line_1": "154 WATERMAN ST",
+    "address_line_2": "SUITE 1B",
+    "city": "PROVIDENCE",
+    "state": "RI",
+    "zip5": "02906",
+    "note": "Clean match used as a happy-path example — expect VERIFIED"
+  }
+]
