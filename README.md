@@ -8,7 +8,7 @@ This is **not** a full production system. It is a readable map of the pattern:
 
 messy provider-directory row → Strands tool-loop agent → structured verdict → confidence floor → eval harness.
 
-The repo stays small on purpose. A fuller project covers a complete implementation.
+The repo stays small on purpose.
 
 ## Article → code map
 
