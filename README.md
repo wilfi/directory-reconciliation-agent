@@ -1,6 +1,6 @@
-# Directory reconciliation agent (skeleton)
+# Directory reconciliation agent (prototype)
 
-Teaching skeleton that accompanies [`ARTICLE.md`](ARTICLE.md).
+Prototype for [`ARTICLE.md`](ARTICLE.md).
 
 **Site:** [wilfi.github.io/directory-reconciliation-agent](https://wilfi.github.io/directory-reconciliation-agent/)
 
@@ -8,7 +8,7 @@ This is **not** a full production system. It is a readable map of the pattern:
 
 messy provider-directory row → Strands tool-loop agent → structured verdict → confidence floor → eval harness.
 
-For a complete implementation (ingest, Postgres, API, AWS deploy), see a fuller project built from the same ideas — this repo stays small on purpose so Medium readers can connect the dots.
+The repo stays small on purpose. A fuller project covers a complete implementation.
 
 ## Article → code map
 
