@@ -1,7 +1,7 @@
 [project]
 name = "directory-reconciliation-agent"
 version = "0.1.0"
-description = "Skeleton reference for a provider-directory reconciliation agent (Medium article companion)"
+description = "Prototype for a provider-directory reconciliation agent"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
