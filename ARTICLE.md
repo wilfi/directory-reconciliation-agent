@@ -145,7 +145,17 @@ Scoring lives in [`evals/run.py`](evals/run.py); sample labels in [`evals/golden
 
 ---
 
-## 5. Where to look in the repo
+## 5. What it looks like in ops
+
+When the same pattern runs as a fuller stack, the agentic loop’s outcomes show up in CloudWatch: verdict mix over time, escalation rate vs volume, average latency, average confidence (LLM-as-judge), plus a biweekly eval panel for accuracy when decisive and recall on labels like `STALE` / `VERIFIED`.
+
+![CloudWatch dashboard: verdict mix, latency, confidence, and biweekly eval](docs/cloudwatch-dashboard.png)
+
+That’s the point of measuring offline too — live confidence and latency tell you how the agent is behaving; the eval gate tells you whether the labels are still trustworthy.
+
+---
+
+## 6. Where to look in the repo
 
 If you want to follow the idea in code, this order works:
 

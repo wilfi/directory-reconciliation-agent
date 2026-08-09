@@ -228,6 +228,25 @@
       margin-top: 0.15rem;
     }
 
+    figure.dashboard {
+      margin: 1.25rem 0 0.5rem;
+      padding: 0;
+    }
+    figure.dashboard img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 0.55rem;
+      border: 1px solid var(--line);
+      box-shadow: 0 18px 40px rgba(14, 26, 31, 0.12);
+      background: #fff;
+    }
+    figure.dashboard figcaption {
+      margin-top: 0.65rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
     footer {
       padding: 2.5rem 0 3.5rem;
       border-top: 1px solid var(--line);
@@ -325,6 +344,25 @@ Verdict {status, confidence, rule_path, evidence}</pre>
         Offline eval scores a golden set for escalation rate, decisive accuracy, and <code>STALE</code> recall:
       </p>
       <pre class="flow">python -m evals.run</pre>
+    </section>
+
+    <section>
+      <h2>What it looks like in ops</h2>
+      <p class="section-lede">
+        When the same pattern runs as a fuller stack, CloudWatch shows the agentic loop in production shape:
+        verdict mix, escalation vs volume, latency, average confidence, and a biweekly eval panel
+        (accuracy when decisive, recall on <code>STALE</code> / <code>VERIFIED</code>).
+      </p>
+      <figure class="dashboard">
+        <img
+          src="cloudwatch-dashboard.png"
+          alt="CloudWatch dashboard showing verdict mix, escalation rate, latency, confidence, and biweekly eval metrics"
+          loading="lazy"
+        />
+        <figcaption>
+          Live verdict mix &amp; eval dashboard from a fuller deployment of this pattern.
+        </figcaption>
+      </figure>
     </section>
 
     <section>

@@ -19,6 +19,7 @@ For a complete implementation (ingest, Postgres, API, AWS deploy), see a fuller 
 | Messy samples + verdicts | [`samples/`](samples/) |
 | Confidence floor + LLM-as-judge | [`agent/reconcile.py`](agent/reconcile.py) (`LLM_CONFIDENCE_FLOOR`), [`agent/tools/llm.py`](agent/tools/llm.py) (`VerdictOutput`) |
 | Eval harness | [`evals/run.py`](evals/run.py), [`evals/golden.sample.jsonl`](evals/golden.sample.jsonl) |
+| Ops / CloudWatch view | [`docs/cloudwatch-dashboard.png`](docs/cloudwatch-dashboard.png) |
 
 ```text
 ARTICLE section "what"     →  agent/reconcile.py
