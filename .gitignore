@@ -6,4 +6,3 @@ __pycache__/
 *.egg-info/
 .pytest_cache/
 .ruff_cache/
-MEDIUM_DRAFT.md
