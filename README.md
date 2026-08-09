@@ -35,14 +35,15 @@ samples/                   messy directory rows + verdict outputs
 core/models.py             Provider / Verdict shapes
 ```
 
-## Try the eval sample
+## Run the sample eval
+
+From the repo root (Python 3, no LLM or database needed — predictions are already in the golden file):
 
 ```bash
-cd ~/Projects/directory-reconciliation-agent
 python -m evals.run
 ```
 
-(No LLM or database required for the sample scorer — predictions are already in `golden.sample.jsonl`.)
+This scores [`evals/golden.sample.jsonl`](evals/golden.sample.jsonl) and prints escalation rate, accuracy, and `STALE` recall. Useful as a tiny template for a larger labeled set.
 
 ## Strands
 
