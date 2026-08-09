@@ -2,6 +2,8 @@
 
 Teaching skeleton that accompanies [`ARTICLE.md`](ARTICLE.md).
 
+**Site:** [wilfi.github.io/directory-reconciliation-agent](https://wilfi.github.io/directory-reconciliation-agent/)
+
 This is **not** a full production system. It is a readable map of the pattern:
 
 messy provider-directory row → Strands tool-loop agent → structured verdict → confidence floor → eval harness.

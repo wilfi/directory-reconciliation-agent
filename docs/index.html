@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Directory Reconciliation Agent</title>
+  <meta name="description" content="Investigate messy provider-directory rows with tools, return structured verdicts, and fail closed when unsure." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #0e1a1f;
+      --ink-soft: #1c3038;
+      --fog: #e8f0f2;
+      --mist: #c5d6db;
+      --paper: #f4f8f9;
+      --accent: #0f8a6b;
+      --accent-bright: #19b890;
+      --warn: #c45c26;
+      --muted: #5a727a;
+      --line: rgba(14, 26, 31, 0.12);
+      --glow: rgba(25, 184, 144, 0.18);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Sora", system-ui, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(1200px 600px at 10% -10%, var(--glow), transparent 55%),
+        radial-gradient(900px 500px at 100% 0%, rgba(196, 92, 38, 0.08), transparent 50%),
+        linear-gradient(180deg, #edf4f6 0%, var(--paper) 40%, #eef3f4 100%);
+      line-height: 1.6;
+    }
+
+    a { color: var(--accent); text-underline-offset: 3px; }
+    a:hover { color: var(--ink); }
+
+    .wrap {
+      width: min(920px, calc(100% - 2.5rem));
+      margin: 0 auto;
+    }
+
+    header.hero {
+      padding: 4.5rem 0 3.25rem;
+      animation: rise 0.7s ease both;
+    }
+
+    .brand {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin: 0 0 1.25rem;
+      font-weight: 500;
+    }
+
+    h1 {
+      font-size: clamp(2.1rem, 5vw, 3.35rem);
+      line-height: 1.12;
+      letter-spacing: -0.03em;
+      margin: 0 0 1rem;
+      max-width: 16ch;
+      font-weight: 700;
+    }
+
+    .lede {
+      font-size: 1.125rem;
+      color: var(--ink-soft);
+      max-width: 38rem;
+      margin: 0 0 1.75rem;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.7rem 1.05rem;
+      border-radius: 0.45rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+      text-decoration: none;
+      border: 1px solid transparent;
+      transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary {
+      background: var(--ink);
+      color: var(--paper);
+    }
+    .btn-primary:hover { background: var(--ink-soft); color: var(--paper); }
+    .btn-ghost {
+      background: transparent;
+      color: var(--ink);
+      border-color: var(--line);
+    }
+    .btn-ghost:hover { border-color: var(--ink); color: var(--ink); }
+
+    section {
+      padding: 2.75rem 0;
+      border-top: 1px solid var(--line);
+      animation: rise 0.75s ease both;
+    }
+    section:nth-of-type(1) { animation-delay: 0.05s; }
+    section:nth-of-type(2) { animation-delay: 0.1s; }
+    section:nth-of-type(3) { animation-delay: 0.15s; }
+    section:nth-of-type(4) { animation-delay: 0.2s; }
+
+    h2 {
+      font-size: 1.45rem;
+      letter-spacing: -0.02em;
+      margin: 0 0 0.75rem;
+    }
+    h3 {
+      font-size: 1.05rem;
+      margin: 1.5rem 0 0.5rem;
+    }
+    p { margin: 0 0 1rem; color: var(--ink-soft); }
+    .section-lede { max-width: 40rem; }
+
+    .verdicts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1rem 0 1.5rem;
+      padding: 0;
+      list-style: none;
+    }
+    .verdicts li {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.82rem;
+      padding: 0.35rem 0.65rem;
+      border: 1px solid var(--line);
+      border-radius: 0.35rem;
+      background: rgba(255, 255, 255, 0.55);
+    }
+
+    pre.flow {
+      margin: 0;
+      padding: 1.15rem 1.25rem;
+      background: var(--ink);
+      color: #d7ebe4;
+      border-radius: 0.55rem;
+      overflow-x: auto;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.82rem;
+      line-height: 1.45;
+      box-shadow: 0 18px 40px rgba(14, 26, 31, 0.18);
+    }
+
+    .examples {
+      display: grid;
+      gap: 0.85rem;
+      margin: 1.25rem 0;
+    }
+    .example {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0.85rem 1rem;
+      align-items: start;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .example:last-child { border-bottom: 0; }
+    .tag {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      padding: 0.28rem 0.5rem;
+      border-radius: 0.3rem;
+      white-space: nowrap;
+      margin-top: 0.15rem;
+    }
+    .tag-ok { background: rgba(15, 138, 107, 0.14); color: #0b6b53; }
+    .tag-stale { background: rgba(196, 92, 38, 0.14); color: #9a4315; }
+    .tag-review { background: rgba(90, 114, 122, 0.16); color: #3d5259; }
+    .example p { margin: 0; font-size: 0.95rem; }
+    .example strong { color: var(--ink); font-weight: 600; }
+
+    .map {
+      list-style: none;
+      padding: 0;
+      margin: 1rem 0 0;
+      counter-reset: step;
+    }
+    .map li {
+      position: relative;
+      padding: 0.85rem 0 0.85rem 2.6rem;
+      border-bottom: 1px solid var(--line);
+      counter-increment: step;
+    }
+    .map li::before {
+      content: counter(step);
+      position: absolute;
+      left: 0;
+      top: 0.9rem;
+      width: 1.7rem;
+      height: 1.7rem;
+      border-radius: 999px;
+      background: var(--ink);
+      color: var(--paper);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.75rem;
+      display: grid;
+      place-items: center;
+    }
+    .map a {
+      font-weight: 600;
+      text-decoration: none;
+      color: var(--ink);
+    }
+    .map a:hover { color: var(--accent); }
+    .map span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-top: 0.15rem;
+    }
+
+    footer {
+      padding: 2.5rem 0 3.5rem;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+    footer p { color: var(--muted); margin: 0 0 0.5rem; }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 560px) {
+      header.hero { padding-top: 3rem; }
+      .example { grid-template-columns: 1fr; gap: 0.4rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero">
+      <p class="brand">Directory Reconciliation Agent</p>
+      <h1>Don’t ask an AI if a provider listing is “correct”</h1>
+      <p class="lede">
+        Give the model tools, a structured verdict, and a fail-closed confidence floor —
+        not a gut check on messy directory rows.
+      </p>
+      <div class="actions">
+        <a class="btn btn-primary" href="https://github.com/wilfi/directory-reconciliation-agent">View on GitHub</a>
+        <a class="btn btn-ghost" href="https://github.com/wilfi/directory-reconciliation-agent/blob/master/ARTICLE.md">Read ARTICLE.md</a>
+      </div>
+    </header>
+
+    <section>
+      <h2>What the agent does</h2>
+      <p class="section-lede">
+        For each directory record it gathers evidence from authoritative sources
+        (NPI format, NPPES registry, name match, address compare) and returns one of:
+      </p>
+      <ul class="verdicts">
+        <li>VERIFIED</li>
+        <li>STALE</li>
+        <li>DEACTIVATED</li>
+        <li>NEEDS_HUMAN_REVIEW</li>
+      </ul>
+      <pre class="flow">messy directory row
+        │
+        ▼
+agent picks tools as it goes
+  · check_npi_format
+  · lookup_npi_registry (NPPES)
+  · validate_practice_address
+  · match_provider_name
+  · compare_practice_addresses
+        │
+        ▼
+Verdict {status, confidence, rule_path, evidence}</pre>
+    </section>
+
+    <section>
+      <h2>What “messy” looks like</h2>
+      <p class="section-lede">
+        Same NPI, two cities. An address that was right years ago. A name that almost matches the registry.
+        The identifier can be fine while the location isn’t.
+      </p>
+      <div class="examples">
+        <div class="example">
+          <span class="tag tag-ok">VERIFIED</span>
+          <p><strong>593 Eddy St, Providence, RI</strong> — NPI <code>1003820432</code> matches an NPPES practice location.</p>
+        </div>
+        <div class="example">
+          <span class="tag tag-stale">STALE</span>
+          <p><strong>45 Wells St, Westerly, RI</strong> — same NPI still active; Westerly isn’t in NPPES locations.</p>
+        </div>
+        <div class="example">
+          <span class="tag tag-review">NEEDS_HUMAN_REVIEW</span>
+          <p><strong>Manhasset row</strong> — directory name/location disagree with NPPES for NPI <code>1003582156</code>. Don’t auto-resolve.</p>
+        </div>
+      </div>
+      <p>
+        Full fixtures:
+        <a href="https://github.com/wilfi/directory-reconciliation-agent/tree/master/samples">samples/</a>
+      </p>
+    </section>
+
+    <section>
+      <h2>Confidence, fail closed</h2>
+      <p class="section-lede">
+        Confidence is reported by the model after it sees tool results — LLM-as-judge over evidence,
+        not a weighted score formula in app code. Below a floor of <code>0.6</code>, policy flips the label to
+        <code>NEEDS_HUMAN_REVIEW</code>.
+      </p>
+      <p>
+        Offline eval scores a golden set for escalation rate, decisive accuracy, and <code>STALE</code> recall:
+      </p>
+      <pre class="flow">python -m evals.run</pre>
+    </section>
+
+    <section>
+      <h2>Where to look in the repo</h2>
+      <ol class="map">
+        <li>
+          <a href="https://github.com/wilfi/directory-reconciliation-agent/blob/master/agent/tools/llm.py">agent/tools/llm.py</a>
+          <span>Strands loop, prompt, VerdictOutput</span>
+        </li>
+        <li>
+          <a href="https://github.com/wilfi/directory-reconciliation-agent/blob/master/agent/tools/agent_tools.py">agent/tools/agent_tools.py</a>
+          <span>Tools the model may call</span>
+        </li>
+        <li>
+          <a href="https://github.com/wilfi/directory-reconciliation-agent/tree/master/samples">samples/</a>
+          <span>Messy rows + real-shaped verdicts</span>
+        </li>
+        <li>
+          <a href="https://github.com/wilfi/directory-reconciliation-agent/blob/master/agent/reconcile.py">agent/reconcile.py</a>
+          <span>Confidence floor / fail-closed policy</span>
+        </li>
+        <li>
+          <a href="https://github.com/wilfi/directory-reconciliation-agent/tree/master/evals">evals/</a>
+          <span>Golden-sample scoring</span>
+        </li>
+      </ol>
+    </section>
+
+    <footer>
+      <p>
+        Built around
+        <a href="https://strandsagents.com/">AWS Strands</a>.
+        Code:
+        <a href="https://github.com/wilfi/directory-reconciliation-agent">github.com/wilfi/directory-reconciliation-agent</a>
+      </p>
+      <p>
+        Examples use publicly available CMS-style directory fields and the public NPPES registry.
+        Independent learning/prototype pattern — not a CMS system or endorsement.
+      </p>
+    </footer>
+  </div>
+</body>
+</html>
